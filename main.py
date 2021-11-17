@@ -18,6 +18,7 @@ class PE:
         print('MZ标志位 {}'.format(self.e_magic))
 
 
+
 with open('./Lab03-03.exe', 'rb+') as f:
     FileBuffer = f.read()
     # print(FileBuffer)
