@@ -28,7 +28,7 @@ class IMAGE_THUNK_DATA32:
         self.Ordinal = self.getvalue(offset=self.offset)
         self.function = hex(self.getvalue(offset=self.offset))
         self.Name = ''
-        if self.Ordinal & (1 << 31) == 0:
+        if self.Ordinal & (1 << 31) == 0:  # 判断是名字索引还是下标索引
             self.Name = self.getstring(self.Ordinal + 0x2)
 
 
