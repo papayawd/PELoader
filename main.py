@@ -1,5 +1,6 @@
-import struct
+# -*- coding: UTF-8 -*-
 from binascii import *
+import sys
 
 
 class IMAGE_THUNK_DATA32:
@@ -160,7 +161,7 @@ class PE:
         self.IMAGE_DIRECTORY_ENTRY_IAT = IMAGE_DATA_DIRECTORY(FileBuff=self.FileBuff,
                                                               offset=self.OP_Header + 0x60 + 12 * 0x8)
 
-        self.SectionBegin = self.NT_header + 0x18 + self.SizeOfOptionalHeader # DOS头+PE头+可选PE头
+        self.SectionBegin = self.NT_header + 0x18 + self.SizeOfOptionalHeader  # DOS头+PE头+可选PE头
 
     def info(self):
         print(type(self.e_magic))
@@ -220,17 +221,30 @@ class PE:
 
         for i in range(self.NumberOfSections):
             section = IMAGE_SECTION_HEADER(self.FileBuff, SECTION_OFFSET)
-            print('{}\t\t{}\t\t\t{}\t\t\t{}\t\t\t{}\t\t\t{}'.format(section.Name, section.VirtualSize, section.VirtualAddress,
-                                                            section.SizeOfRawData, section.PointerToRawData,
-                                                            section.Characteristics))
+            print('{}\t\t{}\t\t\t{}\t\t\t{}\t\t\t{}\t\t\t{}'.format(section.Name, section.VirtualSize,
+                                                                    section.VirtualAddress,
+                                                                    section.SizeOfRawData, section.PointerToRawData,
+                                                                    section.Characteristics))
 
             SECTION_OFFSET += 0x28
 
 
+def help_print():
+    print('[Usage] :  main.py xxx.exe')
+
+
 if __name__ == '__main__':
-    with open('./Lab03-03.exe', 'rb+') as f:
+    if len(sys.argv) != 2:
+        help_print()
+        exit()
+
+    if str(sys.argv[1]) == 'help':
+        help_print()
+        exit()
+
+    with open(str(sys.argv[1]), 'rb+') as f:
         FileBuff = f.read()
         # print(FileBuffer)
         lab = PE(FileBuff=FileBuff)
-        print(type(lab))
+        # print(type(lab))
         lab.info()
